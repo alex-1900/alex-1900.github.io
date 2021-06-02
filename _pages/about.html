@@ -1,0 +1,22 @@
+---
+layout: page
+permalink: /about
+lang: zh
+---
+{% assign t = site.data.language[page.lang].t %}
+<div style="padding-top: 2rem;">
+    {% assign paths = t.page | default: 'Page' %}
+    {% include bread-bar.html paths=paths  %}
+</div>
+
+<h1 class="color-secondary" style="padding: 2rem 0">About</h1>
+
+<div class="color-secondary" style="font-size: 1.2rem;line-height: 2rem;padding: 0 0 4rem 0">
+    <p><strong>Morph</strong> is a minimal Jekyll theme for blog project.</p>
+    <p>Help you record and share your knowledge easily.</p>
+    <br />
+    <p>
+        Feel free to fork me on <a href="https://github.com/alex-1900/jekyll-theme-morph">GitHub</a>.
+        Any issues and suggestions are welcome!
+    </p>
+</div>
