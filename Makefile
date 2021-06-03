@@ -16,18 +16,19 @@ define docker_build
 	fi
 endef
 
-.PHONY: build serve shell .docker_build
+.PHONY: build serve shell
 
-.SILENT: .docker_build serve shell
+.SILENT: serve shell
 
-build:
-	$(docker_build)
+build: build_image
 	$(docker_runner) $(docker_tag) bundle install
 
-serve:
-	$(docker_build)
+serve: build_image
 	$(docker_runner) -p $(port):$(port) -p $(liveport):$(liveport) $(docker_tag) $(jekyll_runner) serve \
 -I --unpublished -l --livereload-port $(liveport) -H 0.0.0.0 -P $(port) --config _config.yml,_config_dev.yml
+
+build_image:
+	$(docker_build)
 
 shell:
 	@echo Container starting...

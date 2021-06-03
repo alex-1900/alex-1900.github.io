@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PCRE 重置捕获组编号
-categories: literature
+categories: magic
 tags: regex
 date: 2021-05-19 03:07 +0000
 ---
