@@ -20,12 +20,15 @@ endef
 
 .SILENT: serve shell
 
-build: build_image
+build: build_image clear
 	$(docker_runner) $(docker_tag) bundle install
 
-serve: build_image
+serve: build_image clear
 	$(docker_runner) -p $(port):$(port) -p $(liveport):$(liveport) $(docker_tag) $(jekyll_runner) serve \
 -I --unpublished -l --livereload-port $(liveport) -H 0.0.0.0 -P $(port) --config _config.yml,_config_dev.yml
+
+clear:
+	$(docker_runner) $(docker_tag) rm -rf ./_site
 
 build_image:
 	$(docker_build)

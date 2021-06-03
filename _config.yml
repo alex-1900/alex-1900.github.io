@@ -67,6 +67,11 @@ morph:
 paginate: 6
 permalink: /:year/:month/:day/:title
 
+# Assets
+sass:
+  sass_dir:     _sass
+  style:        compressed
+
 defaults:
   - scope:
       type: "posts"
