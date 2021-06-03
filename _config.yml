@@ -48,6 +48,7 @@ kramdown:
 
 morph:
   skin: obsidian # silver/obsidian
+  excerpt_length: 130
   include:
     home_categories_bar:
       title: 热门分类
