@@ -88,9 +88,9 @@ build_image:
 `serve` 依赖于 `build_image` 和 `build`，需要先构建镜像再构建项目，然后启动 develop server，这里由于 build 传递了对
 build_image 的依赖，所以 serve 只依赖于 build 即可。
 
-可以看到，Makefile 帮我们做了依赖管理，如果要启动 develop server，我们只要执行 `make serve` 即可。这在构建复杂的开发环境时很有帮助。
-很适合维护类似 docker 这种虚拟环境，可谓是狼狈为奸，是 docker 真正的狐朋狗友。
+可以看到，Makefile 帮我们做了依赖管理，如果要启动 develop server，我们只要执行 `make serve` 即可。这在构建复杂的开发环境时很有帮助，
+很多开源项目也在使用这种管理方式。
 
 ### 总结
-以上两种都是主流方案，可以根据项目情况选择合适的管理方式。顺带说一下，docker compose 和 make 并不是同类工具，compose 是以容器为单位的，
-是一种编排工具，不应该作为用来简化命令行的方案。
+以上两种都是主流方案，可以根据项目情况选择合适的管理方式，一般情况下，使用 make 就能满足大部分项目的需求。顺带说一下，
+docker compose 和 make 并不是同类工具，compose 是以容器为单位的， 是一种编排工具，不应该作为用来简化命令行的方案。
