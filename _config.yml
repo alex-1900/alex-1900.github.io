@@ -56,7 +56,7 @@ morph:
     home_tags_bar:
       title: 热门标签
       path: /tags
-  pages:
+  navigation:
     - name: 标签
       path: /tags
     - name: 归档
