@@ -21,9 +21,9 @@
 title: Alex is Otaku
 email: omytty@126.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  这里是常年家里蹲的 Alex 的个人主页，分享记录生活中的收获与总结（与幻想），深度探访废柴的内心世界。
+  在这里，你可以自由浏览收藏，相信每个人都能在了解 Alex 的过程中，找到属于自己的优越感。
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://alex-1900.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: alex-1900
