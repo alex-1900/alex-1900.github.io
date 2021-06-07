@@ -14,6 +14,10 @@ bread_path: 关于
         width: 256px;
         height: 256px;
     }
+    .furl-info {
+        white-space: nowrap;
+        overflow-y: auto;
+    }
 </style>
 
 {% assign t = site.data.language[page.lang].t %}
@@ -55,7 +59,7 @@ bread_path: 关于
     ！请在 <a target="_blank" href="https://github.com/alex-1900/alex-1900.github.io/issues/1">Github Issue</a>
     中留下你的友链信息，我会尽快添加的~
 </div>
-<header class="color-secondary-light bg-primary" style="border-left: 3px solid  #acd3ff; padding: 1em;">
+<header class="color-secondary-light bg-primary furl-info" style="border-left: 3px solid  #acd3ff; padding: 1em;">
     <p class="header-item">我的友链信息:</p>
     <p class="header-item">
         <strong class="color-secondary-dark">称呼：</strong>
