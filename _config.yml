@@ -25,7 +25,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   在这里，你可以自由浏览收藏，相信每个人都能在了解 Alex 的过程中，找到属于自己的优越感。
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://alex-1900.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.alexis-otaku.top" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: alex-1900
 domain: alexis-otaku.top
 author: alexis-otaku
