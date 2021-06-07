@@ -6,6 +6,16 @@ date: 2021-05-19 03:07 +0000
 lang: zh
 bread_path: 关于
 ---
+<style>
+    .header-item {
+        padding: 5px 0;
+    }
+    .avatar {
+        width: 256px;
+        height: 256px;
+    }
+</style>
+
 {% assign t = site.data.language[page.lang].t %}
 <div style="padding-top: 2rem;">
     {% include bread-bar.html  %}
@@ -35,10 +45,40 @@ bread_path: 关于
         欢迎在 Issue 中讨论或提交 pull request.
     </p>
     <br />
-    <p style="border-left: 3px solid  #acd3ff; padding-left: .5em;font-size: .9rem;font-style:italic;">
+</div>
+
+<h3 class="color-secondary-dark">交换友链</h3>
+<div class="color-secondary" style="font-size: 1.2rem;padding: .5rem 0;">
+    快来交换友情链接，你的名字将会在<a href="{{ '/friends' | prepend: site.baseurl }}">朋友们</a>的展示页中显示；
+    和我签订契约，成为<span style="text-decoration: line-through;font-size: .9rem">魔法少女</span>好朋友吧
+    <i class="fas fa-star color-rang1"></i>
+    ！
+</div>
+<header class="color-secondary-light bg-primary" style="border-left: 3px solid  #acd3ff; padding: 1em;">
+    <p class="header-item">我的友链信息:</p>
+    <p class="header-item">
+        <strong class="color-secondary-dark">称呼：</strong>
+        Alex / 世界的副班长
+    </p>
+    <p class="header-item">
+        <strong class="color-secondary-dark">主页地址：</strong>
+        <a href="{{ site.baseurl | prepend: site.url }}">{{ site.baseurl | prepend: site.url }}</a>
+    </p>
+    <p class="header-item">
+        <strong class="color-secondary-dark">Email：</strong>
+        <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+    </p>
+    <p class="header-item">
+        <strong class="color-secondary-dark">头像：</strong>
+        <a target="_blank" href="https://avatars.githubusercontent.com/u/49949411">https://avatars.githubusercontent.com/u/49949411</a>
+        <br>
+    </p>
+</header>
+
+<div class="color-secondary" style="line-height: 2rem;padding-top: 2rem;">
+    <p style="font-size: .9rem;font-style:italic;">
         <i class="fas fa-heart" style="color: #F08080"></i>
         如果你喜欢本站的布局和样式，欢迎使用全新的开源 jekyll 主题
-        <a target="_blank" href="https://github.com/alex-1900/jekyll-theme-morph">Morph</a>
-        .
+        <a target="_blank" href="https://github.com/alex-1900/jekyll-theme-morph">Morph</a>.
     </p>
 </div>

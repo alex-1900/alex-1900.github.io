@@ -1,0 +1,50 @@
+---
+layout: page
+permalink: /friends
+lang: zh
+bread_path: 朋友们
+---
+<style>
+    .flex-wrap {
+        flex-wrap: wrap;
+    }
+
+    .furl-item {
+        width: 150px;
+        margin: .5rem;
+        padding: 5px;
+    }
+    .furl-image {
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+        border-radius: 100%;
+    }
+</style>
+
+{% assign t = site.data.language[page.lang].t %}
+<div style="padding-top: 2rem;">
+    {% include bread-bar.html  %}
+</div>
+
+<h1 class="color-secondary-dark" style="padding: 2rem 0;">
+    <i class="fas fa-magic"></i>
+    友情链接
+</h1>
+
+<div class="color-secondary" style="font-size: 1.2rem;padding: 0 0 2rem 0;">
+    <p style="border-left: 4px solid  #acd3ff;padding: .5rem 1rem">这些家伙的主页也不错！</p>
+</div>
+
+<div class="d-flex flex-wrap" style="font-size: 1.2rem;line-height: 2rem;">
+    {% for _friend in site.friends %}
+    <a class="d-block bg-primary furl-item" target="_blank" href="{{ _friend.url }}">
+        <div class="text-center">
+            <img src="{{ _friend.image_url }}" class="furl-image" alt="{{ _friend.name }}" title="{{ _friend.name }}">
+        </div>
+        <p class="color-secondary-dark text-center">
+            {{ _friend.name }}
+        </p>
+    </a>
+    {% endfor %}
+</div>

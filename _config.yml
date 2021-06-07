@@ -67,9 +67,16 @@ morph:
       path: /categories
     - name: 搜索
       path: /search
+    - name: 朋友们
+      path: /friends
 
 paginate: 6
 permalink: /:year/:month/:day/:title
+
+friends:
+  - name: Alexis-Otaku
+    url: https://www.alexis-otaku.top/
+    image_url: https://avatars.githubusercontent.com/u/49949411
 
 # Assets
 sass:
