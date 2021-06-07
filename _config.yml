@@ -28,6 +28,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://alex-1900.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: alex-1900
 domain: alexis-otaku.top
+author: alexis-otaku
 
 # Build settings
 # theme: minima
@@ -36,6 +37,9 @@ remote_theme: alex-1900/jekyll-theme-morph
 plugins:
   - jekyll-feed
   - jekyll-paginate
+
+feed:
+  posts_limit: 20
 
 # Build settings
 markdown: kramdown

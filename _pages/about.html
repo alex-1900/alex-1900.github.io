@@ -4,4 +4,26 @@ title: 关于
 permalink: /about
 date: 2021-05-19 03:07 +0000
 lang: zh
+bread_path: 关于
 ---
+{% assign t = site.data.language[page.lang].t %}
+<div style="padding-top: 2rem;">
+    {% include bread-bar.html  %}
+</div>
+
+<h1 class="color-secondary" style="padding: 2rem 0">欢迎来到本站！</h1>
+
+<div class="color-secondary" style="font-size: 1.2rem;line-height: 2rem;padding: 0 0 4rem 0">
+    <p>这里是常年家里蹲的 Alex 的个人主页，分享记录生活中的收获与总结（与幻想），深度探访废柴的内心世界。</p>
+    <p>在这里，你可以自由浏览收藏，相信每个人都能在了解 Alex 的过程中，找到属于自己的优越感。</p><br />
+    <p>如果你对本站的内容感兴趣，请订阅我的 <a href="{{ '/feed.xml' | prepend: site.baseurl }}">RSS</a>.</p>
+    <p>
+        你也可以在 <a target="_blank" href="https://github.com/alex-1900/">GitHub</a> 上找到我，如果有你感兴趣的项目，
+        欢迎在 Issue 中讨论或提交 pull request.
+    </p>
+    <br />
+    <p style="border-left: 3px solid  #acd3ff; padding-left: .5em;font-size: .9rem;">
+        如果你喜欢本站的布局和样式，欢迎使用全新的开源 jekyll 主题
+        <a target="_blank" href="https://github.com/alex-1900/jekyll-theme-morph">Morph</a>.
+    </p>
+</div>
