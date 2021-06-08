@@ -28,8 +28,30 @@ Entity 往往通过协调其关联对象的操作来完成自己的职责。
 
 ## Value Object
 `Value Object` 是用于描述领域的某个方面而本身没有概念标识的对象。对于此类对象，我们只关心它们是什么，而不关心它们是谁；
-Value Object 模型元素应该能够表示出其属性的意义，并为它提供相关功能；Value Object 应该是简单的，不可变的，无标识符的。
+Value Object 模型元素应该能够表示出其属性的意义，并为它提供相关功能；Value Object 应该是简单的，无标识符的。
 
 #### 区别对待 Entity 和 Value Object
 一个系统中跟踪 Entity 标识很重要，但盲目的为对象添加唯一标识会增加系统复杂性和分析工作量，所以要根据业务区别对待系统中的模型，
 仅在真正需要时才建立 Entity.
+
+#### Value Object 的不变性
+一般来说，Value Object 应该是不可改变的，这样可以确保共享和引用传递的安全性。如果属性值发生变化，则应该使用不同的 Value Object 进行替换，
+而不是修改现有的 Value Object.
+
+但有时出于性能考虑，也需要让 Value Object 成为可变的，主要考量以下因素：
+- value 频繁改变
+- 创建或删除 Value Object 开销很大
+- value 的共享不会提高系统性能
+
+总结为，如果一个 value 的实现是可变的，那么就不能共享它。原则是无论是否共享 Value Object，都应该尽可能的将它们设计成不可变的。
+
+#### Denormalization (非规范化)
+一个不可变的 Value Object 可以安全的被其他系统引用，但在某些场景下，引用可能会造成额外的 I/O 操作，例如数据库底层对处在不同页面的数据对象的引用；
+在分布式系统中，对另一台机器上的 Value Object 的引用，也可能导致消息响应缓慢。诸如此类的问题，解决方案是在系统中的不同位置保存多个相同的
+Value Object 副本，这种技术称为 `Denormalization`. 当访问时间比存储空间或维护的简单性更重要时，通常使用这种技术。
+
+#### Value Object 之间没有双向关联
+由于没有标识符，Value Object 之间的`双向关联`是没有意义的，因为我们不能说一个 Value Object 指向另一个 Value Object，只能说两个
+Value Object 是等同的。因此在设计时，应该完全清除 Value Object 之间的双向关联。
+
+## Service
