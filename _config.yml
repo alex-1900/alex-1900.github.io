@@ -69,6 +69,9 @@ morph:
       path: /search
     - name: 朋友们
       path: /friends
+  footer_links:
+    - title: 版权声明
+      path: /copyright
 
 paginate: 6
 permalink: /:year/:month/:day/:title
