@@ -2,8 +2,8 @@ t:
   posts: 文章
   tags_low: 标签
   tags_up: 标签
-  categories_low: 归档
-  categories_up: 归档
+  categories_low: 分类
+  categories_up: 分类
   about_low: 关于
   about_up: 关于
   search_low: 搜索

@@ -63,7 +63,7 @@ morph:
   navigation:
     - name: 标签
       path: /tags
-    - name: 归档
+    - name: 分类
       path: /categories
     - name: 搜索
       path: /search
