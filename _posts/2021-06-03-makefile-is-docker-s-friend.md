@@ -2,7 +2,7 @@
 layout: post
 title: Makefile 是 docker 的好朋友
 authors: [Alex<omytty@126.com>]
-categories: magic
+categories: 开发
 tags: deployment docker
 date: 2021-06-03 05:53 +0000
 ---
