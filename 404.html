@@ -1,25 +1,57 @@
 ---
 permalink: /404.html
-layout: default
+layout: none
 ---
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ "/assets/style/404.css" | relative_url }}">
 
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+  <script src="{{ "/assets/game_plane/javascript/app.js" | relative_url }}"></script>
 
-<div class="container">
-  <h1>404</h1>
+  <title>Document</title>
+</head>
+<body>
+  <div class="interface" id="interface">
+    <div class="container">
+      <h1>404</h1>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+      <p><strong>Page not found :(</strong></p>
+      <p class="mt-1">哎呦~ 页面好像不见了，玩个小游戏放松一下心情吧~</p>
+      <div class="mt-2">
+        <a class="d-inline-block mr-2" id="btn-start-game" href="#">开始游戏</a>
+        <a class="d-inline-block" href="{{ '/' | prepend: site.baseurl }}">回到首页</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="game" id="game">
+    <div id="canvases">
+      加载中
+    </div>
+  </div>
+
+  <script>
+    var interface = document.getElementById('interface')
+    var game = document.getElementById('game')
+    var btnStartGame = document.getElementById('btn-start-game')
+    btnStartGame.onclick = function (event) {
+      event.preventDefault()
+      alert('敬请期待')
+      // interface.style.display = 'none'
+      // game.style.display = 'block'
+      gameStart()
+    }
+
+    function gameStart() {
+      var app = new App({
+
+      })
+    }
+  </script>
+</body>
+</html>
