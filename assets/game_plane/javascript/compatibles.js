@@ -57,6 +57,27 @@
                 wscript.SendKeys("{F11}");
             }
         }
-    };
+    }
+
+    window.gifKeyToCanvases = function (key) {
+        var imageRepository = app.get('imageRepository')
+        var reader = imageRepository.get(key)
+        var canvases = []
+        for (var i = 0; i < reader.numFrames(); i++) {
+            var frameInfo = reader.frameInfo(i)
+            frameInfo.pixels = new Uint8ClampedArray(reader.width * reader.height * 4)
+            reader.decodeAndBlitFrameRGBA(i, frameInfo.pixels)
+
+            var bufferCanvas = document.createElement('canvas')
+            var bufferContext = bufferCanvas.getContext('2d')
+            bufferCanvas.width = reader.width
+            bufferCanvas.height = reader.height
+            var imageData = bufferContext.createImageData(frameInfo.width, frameInfo.height)
+            imageData.data.set(frameInfo.pixels)
+            bufferContext.putImageData(imageData, -frameInfo.x, -frameInfo.y)
+            canvases.push(bufferCanvas)
+        }
+        return canvases
+    }
 
 })(window, document);

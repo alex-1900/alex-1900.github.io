@@ -63,6 +63,10 @@
                 fixX = fixX * proportion
                 fixY = fixY * proportion
             }
+            app.dispatch('ctrlHandlerMoved', {
+                x: fixX,
+                y: fixY
+            })
             this.handleElement.style.top = this.top + fixY + 'px'
             this.handleElement.style.left = this.left + fixX + 'px'
         }
@@ -72,6 +76,10 @@
         if (this.env.type === 'PC') {
             event.preventDefault();
         }
+        app.dispatch('ctrlHandlerMoved', {
+            x: 0,
+            y: 0
+        })
         this.state.touching = false
         this.handleElement.style.top = this.top + 'px'
         this.handleElement.style.left = this.left + 'px'

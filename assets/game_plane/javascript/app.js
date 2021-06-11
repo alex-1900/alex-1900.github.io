@@ -14,6 +14,7 @@
         clients: {},
         container: {},
         frames: [],
+        registers: {},
         state: {
             isRunning: false,
             frameId: 0,
@@ -63,6 +64,22 @@
 
     App.prototype.detachClient = function(clientId) {
         delete this.clients[clientId];
+    }
+
+    App.prototype.listen = function (key, handler) {
+        if (!this.registers[key]) {
+            this.registers[key] = []
+        }
+        this.registers[key].push(handler)
+    }
+
+    App.prototype.dispatch = function (key, data) {
+        var handlers = this.registers[key]
+        if (handlers && handlers.length > 0) {
+            handlers.forEach(function (handler) {
+                handler(data)
+            })
+        }
     }
 
     App.prototype._process = function(timestamp) {
