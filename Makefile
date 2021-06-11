@@ -6,7 +6,7 @@ docker_runner := docker run --rm --volume="$$PWD:/srv/jekyll" -w /srv/jekyll -it
 
 jekyll_runner := bundle exec jekyll
 
-port ?= 4000
+port ?= 8000
 liveport ?= 35729
 
 # build image from dockerfile

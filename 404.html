@@ -11,7 +11,16 @@ layout: none
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="{{ "/assets/style/404.css" | relative_url }}">
 
+  <script src="{{ "/assets/game_plane/javascript/omggif.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/compatibles.js" | relative_url }}"></script>
   <script src="{{ "/assets/game_plane/javascript/app.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/element-factory.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/image-repository.js" | relative_url }}"></script>
+
+  <script src="{{ "/assets/game_plane/javascript/abstruct-client.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/client/bg-client.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/client/hero-client.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/client/controller.js" | relative_url }}"></script>
 
   <title>Document</title>
 </head>
@@ -26,32 +35,133 @@ layout: none
         <a class="d-inline-block mr-2" id="btn-start-game" href="#">开始游戏</a>
         <a class="d-inline-block" href="{{ '/' | prepend: site.baseurl }}">回到首页</a>
       </div>
+      <div class="loader mt-2">
+        <div class="loader-fill" id="loader-fill"></div>
+      </div>
     </div>
   </div>
 
   <div class="game" id="game">
+
     <div id="canvases">
-      加载中
+
     </div>
+
+    <div class="controller" id="controller">
+      <div class="handle float-left">
+        <div class="handle-wrap">
+          <div class="handle-ctrl" id="handle-ctrl"></div>
+        </div>
+      </div>
+      <div class="handle float-right">
+        <div class="shot-wrap">
+          <div class="shot-ctrl" id="shot-ctrl"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
     var interface = document.getElementById('interface')
     var game = document.getElementById('game')
     var btnStartGame = document.getElementById('btn-start-game')
+    var canvases = document.getElementById('canvases')
+    var loaderFill = document.getElementById('loader-fill')
+    var handleCtrl = document.getElementById('handle-ctrl')
+    var shotCtrl = document.getElementById('shot-ctrl')
+
+    var neededImages = {
+      blast: '{{ "/assets/game_plane/images/blast.png" | relative_url }}',
+      boss: '{{ "/assets/game_plane/images/boss.png" | relative_url }}',
+      bossBlast: '{{ "/assets/game_plane/images/boss_blast.gif" | relative_url }}',
+      bossBroken: '{{ "/assets/game_plane/images/boss_broken.png" | relative_url }}',
+      bossDisappear: '{{ "/assets/game_plane/images/boss_disappear.gif" | relative_url }}',
+      map: '{{ "/assets/game_plane/images/map.png" | relative_url }}',
+      enemySmall: '{{ "/assets/game_plane/images/plane_down1.png" | relative_url }}',
+      enemySmallBlast: '{{ "/assets/game_plane/images/plane_down1_blast.gif" | relative_url }}',
+      enemyBig: '{{ "/assets/game_plane/images/plane_down2.png" | relative_url }}',
+      enemyBigBlast: '{{ "/assets/game_plane/images/plane_down2_blast.gif" | relative_url }}',
+      hero: '{{ "/assets/game_plane/images/plane_up.gif" | relative_url }}',
+      heroBlast: '{{ "/assets/game_plane/images/plane_up_blast.gif" | relative_url }}',
+    }
+
     btnStartGame.onclick = function (event) {
       event.preventDefault()
-      alert('敬请期待')
-      // interface.style.display = 'none'
-      // game.style.display = 'block'
-      gameStart()
-    }
-
-    function gameStart() {
-      var app = new App({
-
+      var imageRepository = new ImageRepository(neededImages)
+      imageRepository.onEachLoaded(onResourceLoading())
+      var promise = imageRepository.load()
+      promise.then(function () {
+        interface.style.display = 'none'
+        game.style.display = 'block'
+        gameStart(imageRepository)
       })
     }
+
+    function gameStart(imageRepository) {
+      var env = createEnvironment()
+      window.app = new App(env, canvases)
+      var elementFactory = new ElementFactory()
+      app.set('imageRepository', imageRepository)
+      app.set('elementFactory', elementFactory)
+
+      var bgLayerCanvas = elementFactory.createLayerCanvas(0)
+      app.attachClient(clientBuilder(BgClient, bgLayerCanvas))
+
+      var heroLayerCanvas = elementFactory.createLayerCanvas(1)
+      app.attachClient(clientBuilder(HeroClient, heroLayerCanvas))
+
+      app.attachClient(function (id) {
+        return new Controller(id, handleCtrl, shotCtrl)
+      })
+
+      canvases.appendChild(bgLayerCanvas)
+      canvases.appendChild(heroLayerCanvas)
+
+      app.start()
+    }
+
+    function createEnvironment() {
+      var element = document.getElementById('game')
+      return {
+        width: element.clientWidth,
+        height: element.clientHeight,
+        type: isPC() ? 'PC' : 'Mobile'
+      }
+    }
+
+    function onResourceLoading() {
+      var length = Object.keys(neededImages).length
+      var piece = 100 / length
+      var count = 0
+      return function (image, key) {
+        count += piece
+        var showCount = Math.ceil(count)
+        loaderFill.style.width = showCount + '%'
+      }
+    }
+
+    function clientBuilder(client, canvas) {
+      return function (id) {
+        return new client(id, canvas)
+      }
+    }
+
+    function isPC() {
+      var userAgentInfo = navigator.userAgent;
+      var Agents = ["Android", "iPhone",
+        "SymbianOS", "Windows Phone",
+        "iPad", "iPod"];
+      var flag = true;
+      for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+          flag = false;
+          break;
+        }
+      }
+      return flag;
+    }
+
   </script>
 </body>
 </html>
