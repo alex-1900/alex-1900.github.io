@@ -1,8 +1,7 @@
 (function() {
     "use strict"
 
-    function Controller(id, handleElement, shotBtnElement) {
-        AbstructClient.call(this, id, null)
+    function Controller(handleElement, shotBtnElement) {
         this.handleElement = handleElement
         this.shotBtnElement = shotBtnElement
         this.env = app.get('env')
@@ -19,20 +18,41 @@
             isShotting: false,
             touching: false
         }
+    }
 
+    Controller.prototype.setHandlerListener = function () {
         var eventNameStart = this.env.type === 'PC' ? 'onmousedown' : 'ontouchstart'
         var eventNameMove = this.env.type === 'PC' ? 'onmousemove' : 'ontouchmove'
         var eventNameEnd = this.env.type === 'PC' ? 'onmouseup' : 'ontouchend'
-
-        this.handleElement[eventNameStart] = this.handlerStart.bind(this)
-        document.body[eventNameMove] = this.handlerMove.bind(this)
-        document.body[eventNameEnd] = this.handlerEnd.bind(this)
-        // this.handleElement.onmouseleave = this.handlerEnd.bind(this)
+        this.handleElement[eventNameStart] = this.ctrlHandlerStart.bind(this)
+        document.body[eventNameMove] = this.ctrlHandlerMove.bind(this)
+        document.body[eventNameEnd] = this.ctrlHandlerEnd.bind(this)
     }
 
-    extend(Controller, AbstructClient)
+    Controller.prototype.setShootingListener = function () {
+        var eventNameStart = this.env.type === 'PC' ? 'onmousedown' : 'ontouchstart'
+        var eventNameEnd = this.env.type === 'PC' ? 'onmouseup' : 'ontouchend'
+        this.shotBtnElement[eventNameStart] = (function (event) {
+            event.preventDefault();
+            app.dispatch('shootingStart', null)
+        }).bind(this)
+        this.shotBtnElement[eventNameEnd] = function (event) {
+            event.preventDefault();
+            app.dispatch('shootingStop', null)
+        }
+        window.onkeydown = function (event) {
+            if (event.key === 'a') {
+                app.dispatch('shootingStart', null)
+            }
+        }
+        window.onkeyup = function (event) {
+            if (event.key === 'a') {
+                app.dispatch('shootingStop', null)
+            }
+        }
+    }
 
-    Controller.prototype.handlerStart = function (event) {
+    Controller.prototype.ctrlHandlerStart = function (event) {
         if (this.env.type === 'PC') {
             event.preventDefault();
         }
@@ -45,7 +65,7 @@
         this.state.startY = finger.clientY;
     }
 
-    Controller.prototype.handlerMove = function (event) {
+    Controller.prototype.ctrlHandlerMove = function (event) {
         if (this.env.type === 'PC') {
             event.preventDefault();
         }
@@ -72,7 +92,7 @@
         }
     }
 
-    Controller.prototype.handlerEnd = function (event) {
+    Controller.prototype.ctrlHandlerEnd = function (event) {
         if (this.env.type === 'PC') {
             event.preventDefault();
         }

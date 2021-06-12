@@ -11,16 +11,20 @@ layout: none
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="{{ "/assets/game_plane/style/404.css" | relative_url }}">
 
-  <script src="{{ "/assets/game_plane/javascript/omggif.js" | relative_url }}"></script>
-  <script src="{{ "/assets/game_plane/javascript/compatibles.js" | relative_url }}"></script>
   <script src="{{ "/assets/game_plane/javascript/app.js" | relative_url }}"></script>
-  <script src="{{ "/assets/game_plane/javascript/element-factory.js" | relative_url }}"></script>
-  <script src="{{ "/assets/game_plane/javascript/image-repository.js" | relative_url }}"></script>
 
-  <script src="{{ "/assets/game_plane/javascript/abstruct-client.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/vendor/omggif.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/vendor/image-repository.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/vendor/functions.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/vendor/abstruct-client.js" | relative_url }}"></script>
+
   <script src="{{ "/assets/game_plane/javascript/client/bg-client.js" | relative_url }}"></script>
   <script src="{{ "/assets/game_plane/javascript/client/hero-client.js" | relative_url }}"></script>
-  <script src="{{ "/assets/game_plane/javascript/client/controller.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/client/bullet-client.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/client/enemy-client.js" | relative_url }}"></script>
+
+  <script src="{{ "/assets/game_plane/javascript/service/controller.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/service/composer.js" | relative_url }}"></script>
 
   <title>Document</title>
 </head>
@@ -84,6 +88,8 @@ layout: none
       enemyBigBlast: '{{ "/assets/game_plane/images/plane_down2_blast.gif" | relative_url }}',
       hero: '{{ "/assets/game_plane/images/plane_up.gif" | relative_url }}',
       heroBlast: '{{ "/assets/game_plane/images/plane_up_blast.gif" | relative_url }}',
+      bullet1: '{{ "/assets/game_plane/images/bullet1.png" | relative_url }}',
+      bullet2: '{{ "/assets/game_plane/images/bullet2.png" | relative_url }}',
     }
 
     btnStartGame.onclick = function (event) {
@@ -101,22 +107,33 @@ layout: none
     function gameStart(imageRepository) {
       var env = createEnvironment()
       window.app = new App(env, canvases)
-      var elementFactory = new ElementFactory()
       app.set('imageRepository', imageRepository)
-      app.set('elementFactory', elementFactory)
 
-      var bgLayerCanvas = elementFactory.createLayerCanvas(0)
+      var bgLayerCanvas = createLayerCanvas(0)
+      var bulletLayerCanvas = createLayerCanvas(1)
+      var enemyLayerCanvas = createLayerCanvas(2)
+      var heroLayerCanvas = createLayerCanvas(3)
+      var mixedLayerCanvas = createLayerCanvas(4)
+
+      app.set('bulletLayerCanvas', bulletLayerCanvas)
+      app.set('enemyLayerCanvas', enemyLayerCanvas)
+
       app.attachClient(clientBuilder(BgClient, bgLayerCanvas))
-
-      var heroLayerCanvas = elementFactory.createLayerCanvas(1)
-      app.attachClient(clientBuilder(HeroClient, heroLayerCanvas))
-
-      app.attachClient(function (id) {
-        return new Controller(id, handleCtrl, shotCtrl)
-      })
+      var heroClient = app.attachClient(clientBuilder(HeroClient, heroLayerCanvas))
 
       canvases.appendChild(bgLayerCanvas)
+      canvases.appendChild(bulletLayerCanvas)
+      canvases.appendChild(enemyLayerCanvas)
       canvases.appendChild(heroLayerCanvas)
+      canvases.appendChild(mixedLayerCanvas)
+
+      var controller = new Controller(handleCtrl, shotCtrl)
+      controller.setHandlerListener()
+      controller.setShootingListener()
+
+      app.attachClient(function (id) {
+        return new Composer(id, mixedLayerCanvas, heroClient)
+      })
 
       app.start()
     }

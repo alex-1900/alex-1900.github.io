@@ -80,4 +80,29 @@
         return canvases
     }
 
+    window.createLayerCanvas = function (zIndex) {
+        zIndex = zIndex ? zIndex : 0
+        var env = app.get('env')
+        var canvas = document.createElement('canvas')
+        canvas.width = env.width
+        canvas.height = env.height
+        canvas.style.zIndex = zIndex
+        canvas.getContext('2d')
+        return canvas
+    }
+
+    window.shoot = function (x, y, incrX, incrY) {
+        var canvas = app.get('bulletLayerCanvas')
+        app.attachClient(function (id) {
+            return new BulletClient(id, canvas, x, y, incrX, incrY)
+        })
+    }
+
+    window.enemy = function (x, y, incrX, incrY, shootMod) {
+        var canvas = app.get('enemyLayerCanvas')
+        app.attachClient(function (id) {
+            return new EnemyClient(id, canvas, x, y, incrX, incrY, shootMod)
+        })
+    }
+
 })(window, document);
