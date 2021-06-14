@@ -91,16 +91,26 @@
         return canvas
     }
 
+    window.outsideLimit = function (width, height, x, y) {
+        var scaling = app.env.width / 600
+        var sizeX = width * scaling
+        var sizeY = height * scaling
+        return (
+            (x < -sizeX) || (x > app.env.width + sizeX)
+            || (y < -sizeY) || (y > app.env.height + sizeY)
+        )
+    }
+
     window.shoot = function (x, y, incrX, incrY) {
         var canvas = app.get('bulletLayerCanvas')
-        app.attachClient(function (id) {
+        return app.attachClient(function (id) {
             return new BulletClient(id, canvas, x, y, incrX, incrY)
         })
     }
 
     window.enemy = function (x, y, incrX, incrY, shootMod) {
         var canvas = app.get('enemyLayerCanvas')
-        app.attachClient(function (id) {
+        return app.attachClient(function (id) {
             return new EnemyClient(id, canvas, x, y, incrX, incrY, shootMod)
         })
     }

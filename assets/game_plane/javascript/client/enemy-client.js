@@ -37,6 +37,9 @@
     extend(EnemyClient, AbstructClient)
 
     EnemyClient.prototype.update = function(timestamp) {
+        if (outsideLimit(this.image.width, this.image.height, this.state.x, this.state.y)) {
+            return this.terminate()
+        }
         this.setStates({
             px: this.state.x,
             py: this.state.y,

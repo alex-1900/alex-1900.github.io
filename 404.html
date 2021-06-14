@@ -25,6 +25,7 @@ layout: none
 
   <script src="{{ "/assets/game_plane/javascript/service/controller.js" | relative_url }}"></script>
   <script src="{{ "/assets/game_plane/javascript/service/composer.js" | relative_url }}"></script>
+  <script src="{{ "/assets/game_plane/javascript/service/collider.js" | relative_url }}"></script>
 
   <title>Document</title>
 </head>
@@ -133,6 +134,10 @@ layout: none
 
       app.attachClient(function (id) {
         return new Composer(id, mixedLayerCanvas, heroClient)
+      })
+
+      app.attachClient(function (id) {
+        return new Composer(id, mixedLayerCanvas)
       })
 
       app.start()

@@ -29,6 +29,9 @@
     extend(BulletClient, AbstructClient)
 
     BulletClient.prototype.update = function(timestamp) {
+        if (outsideLimit(this.size * 2, this.size * 2, this.state.x, this.state.y)) {
+            return this.terminate()
+        }
         this.setStates({
             px: this.state.x,
             py: this.state.y,
