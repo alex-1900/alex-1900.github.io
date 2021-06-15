@@ -7,7 +7,7 @@
 
     function QuadTree(boundBox, level) {
         this.id = _counter++
-        this.maxObjects = 3
+        this.maxObjects = 6
         this.bounds = boundBox || {
             x: 0,
             y: 0,
@@ -17,7 +17,7 @@
         this.objects = {}
         this.nodes = []
         this.level = level || 0
-        this.maxLevels = 5
+        this.maxLevels = 3
         nodes[this.id] = this
     }
 
@@ -140,6 +140,13 @@
                 nodeId: this.id,
                 index: obj.id
             }
+        }
+    }
+
+    QuadTree.prototype.remove = function (id) {
+        var valueObj = idMap[id]
+        if (valueObj) {
+            delete nodes[valueObj.nodeId].objects[valueObj.index]
         }
     }
 

@@ -101,10 +101,10 @@
         )
     }
 
-    window.shoot = function (x, y, incrX, incrY) {
+    window.shoot = function (x, y, incrX, incrY, camp) {
         var canvas = app.get('bulletLayerCanvas')
         return app.attachClient(function (id) {
-            return new BulletClient(id, canvas, x, y, incrX, incrY)
+            return new BulletClient(id, canvas, x, y, incrX, incrY, camp)
         })
     }
 

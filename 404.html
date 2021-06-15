@@ -117,8 +117,13 @@ layout: none
       var heroLayerCanvas = createLayerCanvas(3)
       var mixedLayerCanvas = createLayerCanvas(4)
 
+      var collider = app.attachClient(function (id) {
+        return new Collider(id)
+      })
+
       app.set('bulletLayerCanvas', bulletLayerCanvas)
       app.set('enemyLayerCanvas', enemyLayerCanvas)
+      app.set('collider', collider)
 
       app.attachClient(clientBuilder(BgClient, bgLayerCanvas))
       var heroClient = app.attachClient(clientBuilder(HeroClient, heroLayerCanvas))

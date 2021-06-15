@@ -11,6 +11,7 @@
      */
     function HeroClient(id, canvas) {
         AbstructClient.call(this, id, canvas)
+        this.collider = app.get('collider')
 
         app.listen('ctrlHandlerMoved', this.ctrlHandlerMoved.bind(this))
         app.listen('shootingStart', (function () {
@@ -24,6 +25,8 @@
         this.images = gifKeyToCanvases('hero')
         this.scaling = env.width / 600
         this.halfSize = this.images[0].width * this.scaling / 2
+        this.imageWidth = this.images[0].width * this.scaling
+        this.imageHeight = this.images[0].height * this.scaling
         this.state = {
             x: env.width / 2 - this.images[0].width / 2,
             y: env.height - this.images[0].height * 1.5,
@@ -53,10 +56,19 @@
 
         if (this.state.isShooting && (timestamp - this.state.timestampShoot >= 400)) {
             this.state.timestampShoot = timestamp
-            shoot(this.state.x + this.halfSize, this.state.y, 0, -5)
+            shoot(this.state.x + this.halfSize, this.state.y, 0, -5, 1)
         }
 
         this.setStates(states)
+
+        this.collider.listenCollideWithEnemy({
+            id: this.id,
+            x: this.state.x,
+            y: this.state.y,
+            width: this.imageWidth,
+            height: this.imageHeight,
+            payload: this
+        })
     }
 
     HeroClient.prototype.render = function() {
@@ -76,9 +88,13 @@
 
     HeroClient.prototype.ctrlHandlerMoved = function (data) {
         this.setStates({
-            diffX: data.x / 10,
-            diffY: data.y / 10
+            diffX: data.x / 8,
+            diffY: data.y / 8
         })
+    }
+
+    HeroClient.prototype.onCollide = function (enemy) {
+        // this.collider.removeHeroCamp(this.id)
     }
 
     window.HeroClient = HeroClient
