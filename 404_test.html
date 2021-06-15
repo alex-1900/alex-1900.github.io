@@ -1,0 +1,78 @@
+---
+permalink: /404_test.html
+layout: none
+---
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="{{ "/assets/game_plane/javascript/vendor/quad-tree.js" | relative_url }}"></script>
+    <title>Document</title>
+</head>
+<body>
+<script>
+    var quadTree = new QuadTree({x: 0, y: 0, width: 500, height: 500})
+    quadTree.update({
+        id: 1,
+        x: 20,
+        y: 20,
+        width: 20,
+        height: 20,
+        payload: {name: 'aaaaa'}
+    })
+    quadTree.update({
+        id: 2,
+        x: 300,
+        y: 20,
+        width: 20,
+        height: 20,
+        payload: {name: 'bbbbb'}
+    })
+    quadTree.update({
+        id: 3,
+        x: 300,
+        y: 300,
+        width: 20,
+        height: 20,
+        payload: {name: 'ccccc'}
+    })
+    quadTree.update({
+        id: 4,
+        x: 245,
+        y: 300,
+        width: 20,
+        height: 20,
+        payload: {name: 'ddddd'}
+    })
+    quadTree.update({
+        id: 5,
+        x: 300,
+        y: 100,
+        width: 20,
+        height: 20,
+        payload: {name: 'eeeee'}
+    })
+    quadTree.update({
+        id: 6,
+        x: 100,
+        y: 300,
+        width: 20,
+        height: 20,
+        payload: {name: 'fffff'}
+    })
+
+    quadTree.update({
+        id: 5,
+        x: 20,
+        y: 100,
+        width: 20,
+        height: 20,
+        payload: {name: 'eeeee'}
+    })
+    console.log(quadTree)
+</script>
+</body>
+</html>

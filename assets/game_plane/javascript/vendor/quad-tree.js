@@ -14,7 +14,7 @@
             width: 0,
             height: 0
         };
-        this.objects = []
+        this.objects = {}
         this.nodes = []
         this.level = level || 0
         this.maxLevels = 5
@@ -22,7 +22,7 @@
     }
 
     QuadTree.prototype.clear = function () {
-        this.objects = []
+        this.objects = {}
         for (var i = 0; i < this.nodes.length; i++) {
             this.nodes[i].clear()
         }
@@ -37,8 +37,8 @@
         if (index !== -1 && this.nodes.length) {
             this.nodes[index].findAll(returnedObjects, obj)
         }
-        for (var i = 0, len = this.objects.length; i < len; i++) {
-            returnedObjects.push(this.objects[i])
+        for (var i in this.objects) {
+            returnedObjects.push(this.objects[i].payload)
         }
         return returnedObjects
     }
@@ -77,18 +77,17 @@
         }
 
         this.saveObject(obj)
-        if (this.objects.length > this.maxObjects && this.level < this.maxLevels) {
+        if (Object.keys(this.objects).length > this.maxObjects && this.level < this.maxLevels) {
             if (this.nodes[0] == null) {
                 this.split()
             }
-            var i = 0
-            while (i < this.objects.length) {
-                var _quadrant = this.getQuadrant(this.objects[i])
+
+            for (var i in this.objects) {
+                var o = this.objects[i]
+                var _quadrant = this.getQuadrant(o)
                 if (_quadrant !== -1) {
-                    this.nodes[_quadrant].update((this.objects.splice(i, 1))[0])
-                }
-                else {
-                    i++
+                    delete this.objects[o.id]  // id is the key
+                    this.nodes[_quadrant].update(o)
                 }
             }
         }
@@ -132,16 +131,14 @@
         var valueObj = idMap[obj.id]
         var needDelete = valueObj && this.id !== valueObj.nodeId
         if (needDelete) {
-            nodes[valueObj.nodeId].objects.splice(valueObj.index, 1)
-            // delete nodes[valueObj.nodeId].objects[valueObj.index]
-            console.log('777777')
+            delete nodes[valueObj.nodeId].objects[valueObj.index]
         }
 
         if (needDelete || !valueObj) {
-            var len = this.objects.push(obj)
+            this.objects[obj.id] = obj
             idMap[obj.id] = {
                 nodeId: this.id,
-                index: len - 1
+                index: obj.id
             }
         }
     }
