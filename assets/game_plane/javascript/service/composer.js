@@ -39,6 +39,7 @@
      * background client
      * @param id
      * @param canvas
+     * @param heroClient
      * @constructor
      *
      * @extends {AbstructClient}
