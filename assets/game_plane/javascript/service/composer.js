@@ -1,39 +1,10 @@
 (function () {
     "use strict"
 
-    window.activities = []
+    var activities = []
 
-    for (var i = 0; i < 5; i++) {
-        activities.push({
-            t: 300, script: function (app, heroClient) {
-                enemy(0, 100, 2, 1, function (timestamp) {
-                    if (this.isOvertime(timestamp, 800)) {
-                        // shoot(
-                        //     this.state.x + this.halfSize,
-                        //     this.state.y + this.imageHeight,
-                        //     0, 5, 2
-                        // )
-                    }
-                })
-            }
-        })
-    }
-
-    for (i = 0; i < 5; i++) {
-        activities.push({
-            t: 300, script: function (app, heroClient) {
-                enemy(app.env.width, 200, -2, 1, function (timestamp) {
-                    if (this.isOvertime(timestamp, 800)) {
-                        // shoot(
-                        //     this.state.x + this.halfSize,
-                        //     this.state.y + this.imageHeight,
-                        //     0, 5, 2
-                        // )
-                    }
-                })
-            }
-        })
-    }
+    modRightFormation(activities, 20, 100, 600)
+    // modLeftFormation(activities, 5, 200, 600)
 
     /**
      * background client

@@ -61,14 +61,14 @@
 
         this.setStates(states)
 
-        this.collider.listenCollideWithEnemy({
+        this.collider.setCollector('heroes', {
             id: this.id,
             x: this.state.x,
             y: this.state.y,
             width: this.imageWidth,
             height: this.imageHeight,
             payload: this
-        })
+        }, ['enemyBullet', 'enemies'])
     }
 
     HeroClient.prototype.render = function() {
@@ -94,7 +94,12 @@
     }
 
     HeroClient.prototype.onCollide = function (enemy) {
-        // this.collider.removeHeroCamp(this.id)
+
+    }
+
+    HeroClient.prototype.terminate = function() {
+        this.collider.removeCollectorItem('heroes', this.id)
+        app.detachClient(this.id)
     }
 
     window.HeroClient = HeroClient

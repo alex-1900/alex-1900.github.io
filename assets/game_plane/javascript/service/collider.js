@@ -1,6 +1,15 @@
 (function () {
     "use strict"
 
+    function factoryQuadTree() {
+        return new QuadTree({
+            x: -100,
+            y: -100,
+            width: app.env.width + 200,
+            height: app.env.height + 200
+        })
+    }
+
     /**
      * background client
      * @param id
@@ -12,34 +21,76 @@
     function Collider(id) {
         AbstructClient.call(this, id, null)
         this.heroCollision = {} // 可与 enemy 碰撞的 hero 方单位
-        this.enemyQuadTree = new QuadTree({
-            x: -100,
-            y: -100,
-            width: app.env.width + 200,
-            height: app.env.height + 200
-        })
+        this.enemyQuadTree = factoryQuadTree()
+
+        this.collectors = {}
+        this.trees = {}
     }
     extend(Collider, AbstructClient)
 
+    // options: {id, x, y, width, height, payload}
+
     Collider.prototype.update = function(timestamp) {
+        this.checkWithTree(this.heroCollision, this.enemyQuadTree)
         var that = this
-        Object.values(this.heroCollision).forEach(function (options) {
-            var enemies = that.enemyQuadTree.findAll([], options)
-            var hero = options.payload
-            enemies.forEach(function (enemy) {
+        Object.values(this.collectors).forEach(function (item) {
+            for (var name in that.trees) {
+                var tree = that.trees[name]
+                item.tags.forEach(function (tag) {
+                    if (tag === name) {
+                        that.checkWithTree(item.options, tree)
+                    }
+                })
+            }
+        })
+    }
+
+    Collider.prototype.setQuadTree = function (name, options) {
+        if (!this.trees[name]) {
+            this.trees[name] = factoryQuadTree()
+        }
+        this.trees[name].update(options)
+    }
+
+    Collider.prototype.removeQuadTreeItem = function (name, id) {
+        if (this.trees[name]) {
+            this.trees[name].remove(id)
+        }
+    }
+
+    Collider.prototype.setCollector = function (name, options, tags) {
+        if (!this.collectors[name]) {
+            this.collectors[name] = {options: {}}
+        }
+        this.collectors[name].tags = tags || []
+        this.collectors[name].options[options.id] = options
+    }
+
+    Collider.prototype.removeCollectorItem = function (name, id) {
+        if (this.collectors[name].options[id]) {
+            delete this.collectors[name].options[id]
+        }
+    }
+
+    Collider.prototype.checkWithTree = function (collector, quadTree) {
+        var that = this
+        Object.values(collector).forEach(function (option) {
+            var treePayloads = quadTree.findAll([], option)
+            var collectPayload = option.payload
+            treePayloads.forEach(function (treePayload) {
                 if (that.check({
-                    x: options.x,
-                    y: options.y,
-                    width: options.width,
-                    height: options.height
+                    x: option.x,
+                    y: option.y,
+                    width: option.width,
+                    height: option.height
                 }, {
-                    x: enemy.state.x,
-                    y: enemy.state.y,
-                    width: enemy.imageWidth,
-                    height: enemy.imageHeight
+                    x: treePayload.state.x,
+                    y: treePayload.state.y,
+                    width: treePayload.imageWidth,
+                    height: treePayload.imageHeight
                 })) {
-                    hero.onCollide && hero.onCollide(enemy)
-                    enemy.onCollide && enemy.onCollide(hero)
+                    collectPayload.onCollide && collectPayload.onCollide(treePayload)
+                    treePayload.onCollide && treePayload.onCollide(collectPayload)
                 }
             })
         })
@@ -55,22 +106,6 @@
             return true
         }
         return false
-    }
-
-    Collider.prototype.listenCollideWithHero = function (options) {
-        this.enemyQuadTree.update(options)
-    }
-
-    Collider.prototype.listenCollideWithEnemy = function (options) {
-        this.heroCollision[options.id] = options
-    }
-
-    Collider.prototype.removeEnemyCamp = function (id) {
-        this.enemyQuadTree.remove(id)
-    }
-
-    Collider.prototype.removeHeroCamp = function (id) {
-        delete this.heroCollision[id]
     }
 
     window.Collider = Collider

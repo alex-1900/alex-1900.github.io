@@ -14,14 +14,14 @@
      *
      * @extends {AbstructClient}
      */
-    function EnemyClient(id, canvas, x, y, incrX, incrY, shootMod) {
+    function EnemyClient(id, canvas, x, y, incrX, incrY, onUpdate) {
         AbstructClient.call(this, id, canvas)
         this.collider = app.get('collider')
         this.incrX = incrX
         this.incrY = incrY
-        this.shootMod = shootMod
-        if (this.shootMod) {
-            this.shootMod.bind(this)
+        this.onUpdate = onUpdate
+        if (this.onUpdate) {
+            this.onUpdate.bind(this)
         }
         var imageNormal = app.get('imageRepository').get('enemySmall')
         this.imagesDie = gifKeyToCanvases('enemySmallBlast')
@@ -31,6 +31,7 @@
         this.imageHeight = imageNormal.height * this.scaling
         this.isTerminate = false
         this.collideOnce = true
+        this.halfSize = this.imageWidth / 2
         this.state = {
             x: x,
             y: y,
@@ -65,10 +66,10 @@
             y: this.state.y + this.incrY
         })
 
-        if (this.shootMod) {
-            this.shootMod(timestamp)
+        if (this.onUpdate) {
+            this.onUpdate(timestamp)
         }
-        this.collider.listenCollideWithHero({
+        !this.isTerminate && this.collider.setQuadTree('enemies', {
             id: this.id,
             x: this.state.x,
             y: this.state.y,
@@ -99,7 +100,6 @@
             this.isTerminate = true
             this.image = this.imagesDie.shift()
             this.collideOnce = false
-            this.collider.removeEnemyCamp(this.id)
         }
     }
 
@@ -110,6 +110,7 @@
             this.imageWidth,
             this.imageHeight
         )
+        this.collider.removeQuadTreeItem('enemies', this.id)
         app.detachClient(this.id)
     }
 

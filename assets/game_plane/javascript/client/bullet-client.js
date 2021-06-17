@@ -1,6 +1,32 @@
 (function() {
     "use strict"
 
+    function heroCampActionBuilder(collider, client, tags) {
+        return function () {
+            collider.setCollector('heroBullets', {
+                id: client.id,
+                x: client.state.x - client.size,
+                y: client.state.y - client.size,
+                width: client.imageWidth,
+                height: client.imageheight,
+                payload: client
+            }, tags)
+        }
+    }
+
+    function enemyCampActionBuilder(collider, client) {
+        return function () {
+            collider.setCollector('enemyBullets', {
+                id: client.id,
+                x: client.state.x - client.size,
+                y: client.state.y - client.size,
+                width: client.imageWidth,
+                height: client.imageheight,
+                payload: client
+            })
+        }
+    }
+
     /**
      * background client
      * @param id
@@ -17,13 +43,20 @@
     function BulletClient(id, canvas, x, y, incrX, incrY, camp) {
         AbstructClient.call(this, id, canvas)
         this.collider = app.get('collider')
-        this.camp = camp
         this.incrX = incrX
         this.incrY = incrY
         this.scaling = app.get('env').width / 600
         this.size = 5 * this.scaling
         this.imageWidth = this.size * 2
         this.imageheight = this.size * 2
+
+        this.camp = camp
+        if (camp === 1) {
+            this.campAction = heroCampActionBuilder(this.collider, this, ['enemies'])
+        } else {
+            this.campAction = enemyCampActionBuilder(this.collider, this)
+        }
+
         this.state = {
             x: x,
             y: y,
@@ -44,14 +77,7 @@
             y: this.state.y + this.incrY
         })
 
-        this.collider.listenCollideWithEnemy({
-            id: this.id,
-            x: this.state.x - this.size,
-            y: this.state.y - this.size,
-            width: this.imageWidth,
-            height: this.imageheight,
-            payload: this
-        })
+        this.campAction()
     }
 
     BulletClient.prototype.render = function() {
@@ -74,9 +100,9 @@
 
     BulletClient.prototype.onCollide = function (entity) {
         if (this.camp === 1) {
-            this.collider.removeHeroCamp(this.id)
+            this.collider.removeCollectorItem('heroBullets', this.id)
         } else {
-            this.collider.removeEnemyCamp(this.id)
+            this.collider.removeQuadTreeItem('enemyBullets', this.id)
         }
 
         var r = this.size

@@ -147,6 +147,7 @@
         var valueObj = idMap[id]
         if (valueObj) {
             delete nodes[valueObj.nodeId].objects[valueObj.index]
+            delete idMap[id]
         }
     }
 

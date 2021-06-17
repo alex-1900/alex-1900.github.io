@@ -108,10 +108,10 @@
         })
     }
 
-    window.enemy = function (x, y, incrX, incrY, shootMod) {
+    window.enemy = function (x, y, incrX, incrY, onUpdate) {
         var canvas = app.get('enemyLayerCanvas')
         return app.attachClient(function (id) {
-            return new EnemyClient(id, canvas, x, y, incrX, incrY, shootMod)
+            return new EnemyClient(id, canvas, x, y, incrX, incrY, onUpdate)
         })
     }
 
